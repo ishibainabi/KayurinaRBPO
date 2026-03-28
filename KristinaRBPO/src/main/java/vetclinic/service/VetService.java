@@ -1,0 +1,18 @@
+package vetclinic.service;
+
+import org.springframework.stereotype.Service;
+import vetclinic.model.entity.Vet;
+import vetclinic.repository.VetRepository;
+
+import java.util.List;
+
+@Service
+public class VetService {
+    private final VetRepository vetRepository;
+    public VetService(VetRepository vetRepository) { this.vetRepository = vetRepository; }
+
+    public List<Vet> findAll() { return vetRepository.findAll(); }
+    public Vet findById(Long id) { return vetRepository.findById(id).orElse(null); }
+    public Vet save(Vet vet) { return vetRepository.save(vet); }
+    public void deleteById(Long id) { vetRepository.deleteById(id); }
+}
