@@ -26,9 +26,16 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
-    public Appointment update(Long id, Appointment appointment) {
-        appointment.setId(id);
-        return appointmentRepository.save(appointment);
+    public Appointment update(Long id, Appointment data) {
+        Appointment existing = appointmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        existing.setAppointmentTime(data.getAppointmentTime());
+        existing.setPet(data.getPet());
+        existing.setVet(data.getVet());
+        existing.setTreatment(data.getTreatment());
+
+        return appointmentRepository.save(existing);
     }
 
     public void deleteById(Long id) {
