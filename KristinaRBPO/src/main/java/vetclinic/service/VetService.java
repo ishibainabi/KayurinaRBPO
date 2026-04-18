@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class VetService {
+
     private final VetRepository vetRepository;
 
     public VetService(VetRepository vetRepository) {
@@ -19,15 +20,12 @@ public class VetService {
     }
 
     public Vet findById(Long id) {
-        return vetRepository.findById(id).orElse(null);
+        return vetRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vet not found"));
     }
 
     public Vet save(Vet vet) {
         return vetRepository.save(vet);
-    }
-
-    public void deleteById(Long id) {
-        vetRepository.deleteById(id);
     }
 
     public Vet update(Long id, Vet data) {
@@ -38,5 +36,9 @@ public class VetService {
         existing.setSpecialization(data.getSpecialization());
 
         return vetRepository.save(existing);
+    }
+
+    public void deleteById(Long id) {
+        vetRepository.deleteById(id);
     }
 }
