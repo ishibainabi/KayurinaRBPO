@@ -1,6 +1,6 @@
 package vetclinic.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class Owner {
     private String email;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("owner-pets")
+    @JsonIgnore
     private List<Pet> pets = new ArrayList<>();
 
     public Owner() {}
