@@ -1,11 +1,14 @@
 package vetclinic.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments")
 public class Appointment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointment_seq")
     @SequenceGenerator(name = "appointment_seq", sequenceName = "appointment_seq", allocationSize = 50)
@@ -17,12 +20,14 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "vet_id", nullable = false)
+    @JsonIgnore
     private Vet vet;
 
     @Column(nullable = false)
     private LocalDateTime appointmentTime;
 
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("appointment-treatment")
     private Treatment treatment;
 
     public Appointment() {}
