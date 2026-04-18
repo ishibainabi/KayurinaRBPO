@@ -26,9 +26,14 @@ public class TreatmentService {
         return treatmentRepository.save(treatment);
     }
 
-    public Treatment update(Long id, Treatment treatment) {
-        treatment.setId(id);
-        return treatmentRepository.save(treatment);
+    public Treatment update(Long id, Treatment data) {
+        Treatment existing = treatmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Treatment not found"));
+
+        existing.setDescription(data.getDescription());
+        existing.setAppointment(data.getAppointment());
+
+        return treatmentRepository.save(existing);
     }
 
     public void deleteById(Long id) {
