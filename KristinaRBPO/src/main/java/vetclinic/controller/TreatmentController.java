@@ -3,6 +3,7 @@ package vetclinic.controller;
 import org.springframework.web.bind.annotation.*;
 import vetclinic.model.entity.Treatment;
 import vetclinic.service.TreatmentService;
+import vetclinic.dto.TreatmentCreateRequest;
 
 import java.util.List;
 
@@ -10,34 +11,29 @@ import java.util.List;
 @RequestMapping("/api/treatments")
 public class TreatmentController {
 
-    private final TreatmentService treatmentService;
+    private final TreatmentService service;
 
-    public TreatmentController(TreatmentService treatmentService) {
-        this.treatmentService = treatmentService;
+    public TreatmentController(TreatmentService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<Treatment> getAll() {
-        return treatmentService.findAll();
+        return service.findAll();
+    }
+
+    @PostMapping
+    public Treatment create(@RequestBody TreatmentCreateRequest request) {
+        return service.save(request);
     }
 
     @GetMapping("/{id}")
     public Treatment getById(@PathVariable Long id) {
-        return treatmentService.findById(id);
-    }
-
-    @PostMapping
-    public Treatment create(@RequestBody Treatment treatment) {
-        return treatmentService.save(treatment);
+        return service.findById(id);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        treatmentService.deleteById(id);
-    }
-
-    @PutMapping("/{id}")
-    public Treatment update(@PathVariable Long id, @RequestBody Treatment treatment) {
-        return treatmentService.update(id, treatment);
+        service.deleteById(id);
     }
 }
