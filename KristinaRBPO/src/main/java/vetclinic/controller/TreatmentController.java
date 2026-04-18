@@ -9,18 +9,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/treatments")
 public class TreatmentController {
+
     private final TreatmentService treatmentService;
-    public TreatmentController(TreatmentService treatmentService) { this.treatmentService = treatmentService; }
+
+    public TreatmentController(TreatmentService treatmentService) {
+        this.treatmentService = treatmentService;
+    }
 
     @GetMapping
-    public List<Treatment> getAll() { return treatmentService.findAll(); }
+    public List<Treatment> getAll() {
+        return treatmentService.findAll();
+    }
 
     @GetMapping("/{id}")
-    public Treatment getById(@PathVariable Long id) { return treatmentService.findById(id); }
+    public Treatment getById(@PathVariable Long id) {
+        return treatmentService.findById(id);
+    }
 
     @PostMapping
-    public Treatment create(@RequestBody Treatment treatment) { return treatmentService.save(treatment); }
+    public Treatment create(@RequestBody Treatment treatment) {
+        return treatmentService.save(treatment);
+    }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) { treatmentService.deleteById(id); }
+    public void delete(@PathVariable Long id) {
+        treatmentService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Treatment update(@PathVariable Long id, @RequestBody Treatment treatment) {
+        return treatmentService.update(id, treatment);
+    }
 }
