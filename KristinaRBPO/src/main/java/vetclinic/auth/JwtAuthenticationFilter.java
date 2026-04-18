@@ -46,14 +46,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             Claims claims = jwt.parse(token).getBody();
 
+            // проверка типа токена
             if (!"access".equals(claims.get("type"))) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
 
             Long sessionId = claims.get("sessionId", Long.class);
+
+            if (sessionId == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+
             UserSession session = sessionRepo.findById(sessionId)
-                    .orElseThrow();
+                    .orElse(null);
+
+            if (session == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
 
             if (session.getStatus() != SessionStatus.ACTIVE) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -62,6 +74,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             String username = claims.getSubject();
             String role = claims.get("role", String.class);
+
+            if (role == null || role.isBlank()) {
+                role = "USER";
+            }
 
             var auth = new UsernamePasswordAuthenticationToken(
                     username,
