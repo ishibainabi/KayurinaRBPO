@@ -30,8 +30,13 @@ public class VetService {
         vetRepository.deleteById(id);
     }
 
-    public Vet update(Long id, Vet vet) {
-        vet.setId(id);
-        return vetRepository.save(vet);
+    public Vet update(Long id, Vet data) {
+        Vet existing = vetRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vet not found"));
+
+        existing.setName(data.getName());
+        existing.setSpecialization(data.getSpecialization());
+
+        return vetRepository.save(existing);
     }
 }
