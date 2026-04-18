@@ -32,6 +32,10 @@ public class PetService {
 
     public Pet save(PetCreateRequest request) {
 
+        if (request.getOwnerId() == null) {
+            throw new RuntimeException("ownerId is null");
+        }
+
         Owner owner = ownerRepository.findById(request.getOwnerId())
                 .orElseThrow(() -> new RuntimeException("Owner not found"));
 
