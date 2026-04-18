@@ -10,17 +10,33 @@ import java.util.List;
 @RequestMapping("/api/appointments")
 public class AppointmentController {
     private final AppointmentService appointmentService;
-    public AppointmentController(AppointmentService appointmentService) { this.appointmentService = appointmentService; }
+
+    public AppointmentController(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
+    }
 
     @GetMapping
-    public List<Appointment> getAll() { return appointmentService.findAll(); }
+    public List<Appointment> getAll() {
+        return appointmentService.findAll();
+    }
 
     @GetMapping("/{id}")
-    public Appointment getById(@PathVariable Long id) { return appointmentService.findById(id); }
+    public Appointment getById(@PathVariable Long id) {
+        return appointmentService.findById(id);
+    }
 
     @PostMapping
-    public Appointment create(@RequestBody Appointment appointment) { return appointmentService.save(appointment); }
+    public Appointment create(@RequestBody Appointment appointment) {
+        return appointmentService.save(appointment);
+    }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) { appointmentService.deleteById(id); }
+    public void delete(@PathVariable Long id) {
+        appointmentService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Appointment update(@PathVariable Long id, @RequestBody Appointment appointment) {
+        return appointmentService.update(id, appointment);
+    }
 }
