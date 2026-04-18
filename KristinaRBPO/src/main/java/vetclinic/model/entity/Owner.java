@@ -1,5 +1,6 @@
 package vetclinic.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "owners")
 public class Owner {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "owner_seq")
     @SequenceGenerator(name = "owner_seq", sequenceName = "owner_seq", allocationSize = 50)
@@ -19,6 +21,7 @@ public class Owner {
     private String email;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("owner-pets")
     private List<Pet> pets = new ArrayList<>();
 
     public Owner() {}
