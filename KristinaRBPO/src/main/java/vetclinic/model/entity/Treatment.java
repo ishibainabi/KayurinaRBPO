@@ -1,10 +1,12 @@
 package vetclinic.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "treatments")
 public class Treatment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "treatment_seq")
     @SequenceGenerator(name = "treatment_seq", sequenceName = "treatment_seq", allocationSize = 50)
@@ -15,6 +17,7 @@ public class Treatment {
 
     @OneToOne
     @JoinColumn(name = "appointment_id", nullable = false)
+    @JsonIgnore
     private Appointment appointment;
 
     public Treatment() {}
