@@ -7,6 +7,7 @@ import vetclinic.model.entity.Vet;
 import vetclinic.repository.AppointmentRepository;
 import vetclinic.repository.PetRepository;
 import vetclinic.repository.VetRepository;
+import vetclinic.dto.AppointmentCreateRequest;
 
 import java.util.List;
 
@@ -34,43 +35,20 @@ public class AppointmentService {
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
     }
 
-    public Appointment save(Appointment a) {
+    public Appointment save(AppointmentCreateRequest request) {
 
-        Pet pet = petRepository.findById(a.getPet().getId())
+        Pet pet = petRepository.findById(request.getPetId())
                 .orElseThrow(() -> new RuntimeException("Pet not found"));
 
-        Vet vet = vetRepository.findById(a.getVet().getId())
+        Vet vet = vetRepository.findById(request.getVetId())
                 .orElseThrow(() -> new RuntimeException("Vet not found"));
 
+        Appointment a = new Appointment();
         a.setPet(pet);
         a.setVet(vet);
-
-        if (a.getTreatment() != null) {
-            a.getTreatment().setAppointment(a);
-        }
+        a.setAppointmentTime(request.getAppointmentTime());
 
         return appointmentRepository.save(a);
-    }
-
-    public Appointment update(Long id, Appointment data) {
-        Appointment existing = appointmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Appointment not found"));
-
-        existing.setAppointmentTime(data.getAppointmentTime());
-
-        if (data.getPet() != null) {
-            Pet pet = petRepository.findById(data.getPet().getId())
-                    .orElseThrow(() -> new RuntimeException("Pet not found"));
-            existing.setPet(pet);
-        }
-
-        if (data.getVet() != null) {
-            Vet vet = vetRepository.findById(data.getVet().getId())
-                    .orElseThrow(() -> new RuntimeException("Vet not found"));
-            existing.setVet(vet);
-        }
-
-        return appointmentRepository.save(existing);
     }
 
     public void deleteById(Long id) {
