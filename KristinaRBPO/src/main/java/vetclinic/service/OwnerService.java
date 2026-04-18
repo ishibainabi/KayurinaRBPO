@@ -26,9 +26,14 @@ public class OwnerService {
         return ownerRepository.save(owner);
     }
 
-    public Owner update(Long id, Owner owner) {
-        owner.setId(id);
-        return ownerRepository.save(owner);
+    public Owner update(Long id, Owner data) {
+        Owner existing = ownerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Owner not found"));
+
+        existing.setName(data.getName());
+        existing.setEmail(data.getEmail());
+
+        return ownerRepository.save(existing);
     }
 
     public void deleteById(Long id) {
