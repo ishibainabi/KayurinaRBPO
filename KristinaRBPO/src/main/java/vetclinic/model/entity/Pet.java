@@ -1,10 +1,13 @@
 package vetclinic.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "pets")
 public class Pet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pet_seq")
     @SequenceGenerator(name = "pet_seq", sequenceName = "pet_seq", allocationSize = 50)
@@ -18,6 +21,7 @@ public class Pet {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
+    @JsonIgnore
     private Owner owner;
 
     public Pet() {}
