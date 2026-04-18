@@ -5,6 +5,7 @@ import vetclinic.model.entity.Appointment;
 import vetclinic.model.entity.Treatment;
 import vetclinic.repository.AppointmentRepository;
 import vetclinic.repository.TreatmentRepository;
+import vetclinic.dto.TreatmentCreateRequest;
 
 import java.util.List;
 
@@ -29,32 +30,16 @@ public class TreatmentService {
                 .orElseThrow(() -> new RuntimeException("Treatment not found"));
     }
 
-    public Treatment save(Treatment t) {
+    public Treatment save(TreatmentCreateRequest request) {
 
-        Appointment appointment = appointmentRepository.findById(
-                t.getAppointment().getId()
-        ).orElseThrow(() -> new RuntimeException("Appointment not found"));
+        Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
+                .orElseThrow(() -> new RuntimeException("Appointment not found"));
 
+        Treatment t = new Treatment();
+        t.setDescription(request.getDescription());
         t.setAppointment(appointment);
 
         return treatmentRepository.save(t);
-    }
-
-    public Treatment update(Long id, Treatment data) {
-        Treatment existing = treatmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Treatment not found"));
-
-        existing.setDescription(data.getDescription());
-
-        if (data.getAppointment() != null) {
-            Appointment appointment = appointmentRepository.findById(
-                    data.getAppointment().getId()
-            ).orElseThrow(() -> new RuntimeException("Appointment not found"));
-
-            existing.setAppointment(appointment);
-        }
-
-        return treatmentRepository.save(existing);
     }
 
     public void deleteById(Long id) {
