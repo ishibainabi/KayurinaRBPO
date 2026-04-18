@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class OwnerService {
+
     private final OwnerRepository ownerRepository;
 
     public OwnerService(OwnerRepository ownerRepository) {
@@ -19,7 +20,8 @@ public class OwnerService {
     }
 
     public Owner findById(Long id) {
-        return ownerRepository.findById(id).orElse(null);
+        return ownerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Owner not found"));
     }
 
     public Owner save(Owner owner) {
