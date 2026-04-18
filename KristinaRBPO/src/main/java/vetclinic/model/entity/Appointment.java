@@ -27,7 +27,7 @@ public class Appointment {
     private LocalDateTime appointmentTime;
 
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("appointment-treatment")
+    @JsonIgnore
     private Treatment treatment;
 
     public Appointment() {}
