@@ -1,41 +1,48 @@
 package vetclinic.model.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
 
 @Entity
-@Table(name = "user_sessions")
-public class UserSession {
+@Table(name = "users")
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
+    @Column(unique = true, nullable = false)
+    private String username;
 
-    private String refreshTokenHash;
+    @Column(unique = true, nullable = false)
+    private String email;
 
-    private Instant expiresAt;
+    @Column(nullable = false)
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    private SessionStatus status = SessionStatus.ACTIVE;
+    private Role role = Role.USER;
 
-    public UserSession() {}
+    public User() {}
 
-    public UserSession(User user, String refreshTokenHash, Instant expiresAt) {
-        this.user = user;
-        this.refreshTokenHash = refreshTokenHash;
-        this.expiresAt = expiresAt;
+    public User(String username, String email, String password, Role role) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     // getters & setters
     public Long getId() { return id; }
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
-    public String getRefreshTokenHash() { return refreshTokenHash; }
-    public void setRefreshTokenHash(String refreshTokenHash) { this.refreshTokenHash = refreshTokenHash; }
-    public Instant getExpiresAt() { return expiresAt; }
-    public void setExpiresAt(Instant expiresAt) { this.expiresAt = expiresAt; }
-    public SessionStatus getStatus() { return status; }
-    public void setStatus(SessionStatus status) { this.status = status; }
+
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 }
