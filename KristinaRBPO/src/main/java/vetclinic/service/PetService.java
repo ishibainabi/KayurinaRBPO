@@ -5,6 +5,7 @@ import vetclinic.model.entity.Owner;
 import vetclinic.model.entity.Pet;
 import vetclinic.repository.OwnerRepository;
 import vetclinic.repository.PetRepository;
+import vetclinic.dto.PetCreateRequest;
 
 import java.util.List;
 
@@ -29,26 +30,30 @@ public class PetService {
                 .orElseThrow(() -> new RuntimeException("Pet not found"));
     }
 
-    public Pet save(Pet pet) {
-        Owner owner = ownerRepository.findById(pet.getOwner().getId())
+    public Pet save(PetCreateRequest request) {
+
+        Owner owner = ownerRepository.findById(request.getOwnerId())
                 .orElseThrow(() -> new RuntimeException("Owner not found"));
 
+        Pet pet = new Pet();
+        pet.setName(request.getName());
+        pet.setSpecies(request.getSpecies());
         pet.setOwner(owner);
 
         return petRepository.save(pet);
     }
 
-    public Pet update(Long id, Pet data) {
+    public Pet update(Long id, PetCreateRequest request) {
+
         Pet existing = petRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pet not found"));
 
-        existing.setName(data.getName());
-        existing.setSpecies(data.getSpecies());
+        existing.setName(request.getName());
+        existing.setSpecies(request.getSpecies());
 
-        if (data.getOwner() != null) {
-            Owner owner = ownerRepository.findById(data.getOwner().getId())
+        if (request.getOwnerId() != null) {
+            Owner owner = ownerRepository.findById(request.getOwnerId())
                     .orElseThrow(() -> new RuntimeException("Owner not found"));
-
             existing.setOwner(owner);
         }
 
