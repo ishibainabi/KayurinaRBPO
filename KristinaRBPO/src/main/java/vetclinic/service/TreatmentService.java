@@ -32,6 +32,10 @@ public class TreatmentService {
 
     public Treatment save(TreatmentCreateRequest request) {
 
+        if (request.getAppointmentId() == null) {
+            throw new RuntimeException("appointmentId is null");
+        }
+
         Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
 
