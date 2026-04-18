@@ -1,9 +1,9 @@
 package vetclinic.controller;
 
 import org.springframework.web.bind.annotation.*;
+import vetclinic.dto.AppointmentCreateRequest;
 import vetclinic.model.entity.Appointment;
 import vetclinic.service.AppointmentService;
-import vetclinic.dto.AppointmentCreateRequest;
 
 import java.util.List;
 
@@ -11,29 +11,35 @@ import java.util.List;
 @RequestMapping("/api/appointments")
 public class AppointmentController {
 
-    private final AppointmentService service;
+    private final AppointmentService appointmentService;
 
-    public AppointmentController(AppointmentService service) {
-        this.service = service;
+    public AppointmentController(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
     }
 
     @GetMapping
     public List<Appointment> getAll() {
-        return service.findAll();
-    }
-
-    @PostMapping
-    public Appointment create(@RequestBody AppointmentCreateRequest request) {
-        return service.save(request);
+        return appointmentService.findAll();
     }
 
     @GetMapping("/{id}")
     public Appointment getById(@PathVariable Long id) {
-        return service.findById(id);
+        return appointmentService.findById(id);
+    }
+
+    @PostMapping
+    public Appointment create(@RequestBody AppointmentCreateRequest request) {
+        return appointmentService.save(request);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.deleteById(id);
+        appointmentService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Appointment update(@PathVariable Long id,
+                              @RequestBody AppointmentCreateRequest request) {
+        return appointmentService.update(id, request);
     }
 }
