@@ -26,9 +26,15 @@ public class PetService {
         return petRepository.save(pet);
     }
 
-    public Pet update(Long id, Pet pet) {
-        pet.setId(id);
-        return petRepository.save(pet);
+    public Pet update(Long id, Pet data) {
+        Pet existing = petRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pet not found"));
+
+        existing.setName(data.getName());
+        existing.setSpecies(data.getSpecies());
+        existing.setOwner(data.getOwner());
+
+        return petRepository.save(existing);
     }
 
     public void deleteById(Long id) {
