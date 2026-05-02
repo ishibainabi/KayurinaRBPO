@@ -79,4 +79,14 @@ public class Appointment {
     public void setTreatments(List<Treatment> treatments) {
         this.treatments = treatments;
     }
+
+    public void addTreatment(Treatment treatment) {
+        treatments.add(treatment);
+        treatment.setAppointment(this);
+    }
+
+    public void removeTreatment(Treatment treatment) {
+        treatments.remove(treatment);
+        treatment.setAppointment(null);
+    }
 }
