@@ -27,19 +27,22 @@ public class AppointmentController {
         return appointmentService.findById(id);
     }
 
+    // CREATE
     @PostMapping
     public Appointment create(@RequestBody AppointmentCreateRequest request) {
-        return appointmentService.save(request);
+        return appointmentService.create(request);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        appointmentService.deleteById(id);
-    }
-
+    // UPDATE
     @PutMapping("/{id}")
     public Appointment update(@PathVariable Long id,
                               @RequestBody AppointmentCreateRequest request) {
         return appointmentService.update(id, request);
+    }
+
+    // DELETE
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        appointmentService.deleteById(id);
     }
 }
